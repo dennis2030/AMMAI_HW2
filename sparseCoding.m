@@ -14,21 +14,21 @@ qPts = size(query,1);
 nPts = size(database,1);
 nDim = 59;
 nPart = 80;
-K = 100;
+K = 60;
 
-parD.lambda = 0.01;
+parD.lambda = 0.04;
 parD.K = K;
 parD.posD = 1;
 parD.posAlpha = 1;
 parD.iter = 50;
 parD.verbose = 0;
-parD.numThreads = 2;
+parD.numThreads = 8;
 
-parS.lambda = 0.01;
+parS.lambda = 0.04;
 parS.K = K;
 parS.pos = 1;
 parS.verbose = 0;
-parS.numThreads = 2;
+parS.numThreads = 8;
 
 D = zeros(nDim, K, nPart);
 querySR = zeros(qPts, K*nPart);
@@ -47,5 +47,6 @@ for i = 1:nPart
     endIdx_sparse = i*K;
     databaseSR(:,startIdx_sparse:endIdx_sparse) = mexLasso(database(:,startIndex:endIndex)',D(:,:,i),parS)';
     querySR(:,startIdx_sparse:endIdx_sparse) = mexLasso(query(:,startIndex:endIndex)',D(:,:,i),parS)';
+
 end
 

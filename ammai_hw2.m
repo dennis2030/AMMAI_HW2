@@ -32,11 +32,15 @@ toc;
 % Here we compute the distance using matrix multiplication,
 % but when dealing with large-scale problem, we can adpot inverted indexing
 fprintf('Computing distance...\n');
-querySR(find(querySR~=0)) = 1;
-databaseSR(find(databaseSR~=0)) = 1;
-distance = -1*querySR*databaseSR';
+%querySR(find(querySR~=0)) = 1;
+%databaseSR(find(databaseSR~=0)) = 1;
+databaseSR = addIdentity(databaseSR, LFW_DATA.databaseIdentity);
+%distance = -1*querySR*databaseSR';
+
+distance = computeDistance(querySR, databaseSR, 60);
 
 fprintf('Calculate mean average precision...\n');
 result = calculateMAP(distance, LFW_DATA.queryIdentity, LFW_DATA.databaseIdentity);
 fprintf('MAP for Sparse Coding: %f\n', result);
 fprintf('If every thing is correct, the MAP should be around 0.148\n');
+generateUpload(distance, LFW_DATA, 'bean.out');
